@@ -6,11 +6,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>StarBlast Ship Showcase</title>
+    <title>Ship Editor</title>
     <link href='https://fonts.googleapis.com/css?family=Lato:300,900' rel='stylesheet' type='text/css'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.css" rel="stylesheet"
         type="text/css" />
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://starblast.io/static/img/icon64.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
@@ -172,9 +173,17 @@
         var module = {};
     </script>
     <style>
+        @font-face {
+            font-family: 'Ethnocentric';
+            src: url('https://github.com/Modraxis/Modraxis.github.io/raw/main/ethnocentric.otf');
+            font-weight: normal;
+            font-style: normal
+        }
+
         * {
             margin: 0;
-            padding: 0
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body,
@@ -190,27 +199,43 @@
         }
 
         .header {
-            font-family: 'Lato', sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             padding-top: 9px;
-            height: 50px;
-            text-align: left;
+            height: 60px;
             border-bottom: solid 2px hsl(200, 100%, 80%);
-            box-shadow: 0 0 30px hsl(200, 100%, 50%)
+            box-shadow: 0 0 30px hsl(200, 100%, 50%);
         }
 
-        .header a {
+        .header h2 {
+            font-size: 1.5em;
+            font-weight: 500;
+            font-family: "Ethnocentric", Arial, Helvetica, sans-serif;
+        }
+
+        .header .links {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: row;
+            width: fit-content;
+            margin-right: 10px;
+        }
+        
+        .header .links a {
             border-radius: 2px;
+            margin: 0 5px;
             padding: 5px 10px;
-            font-size: 1.2em;
-            position: fixed;
+            font-size: 1em;
             font-family: Play;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 255, 255, .25)
+            background-color: rgba(255, 255, 255, .25);
+            font-family: "Ethnocentric", Arial, Helvetica, sans-serif;
         }
 
         .overlay {
@@ -225,23 +250,6 @@
             display: none
         }
 
-        .btn {
-            display: inline-block;
-            padding: 10px;
-            background: linear-gradient(135deg, #48585b 0, #28383b 100%);
-            border: 2px outset #48585b;
-            cursor: pointer
-        }
-
-        .btn:hover {
-            border: 2px outset #28383b
-        }
-
-        .btn-return {
-            margin-top: 50px;
-            font-weight: normal
-        }
-
         #shipLoader {
             display: none;
             position: fixed;
@@ -252,35 +260,6 @@
             left: 50%;
             transform: translateX(-50%) translateY(-50%);
             background: linear-gradient(135deg, #48585b 0, #28383b 100%)
-        }
-
-        #wrongECP,
-        #disclaimer {
-            font-weight: bold;
-            display: none;
-            position: fixed;
-            z-index: 3;
-            width: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            background: linear-gradient(135deg, #48585b 0, #28383b 100%)
-        }
-
-        #disclaimer ul {
-            padding: 0 30px;
-            margin: 0
-        }
-
-        #disclaimer .content {
-            padding: 20px;
-            font-weight: normal
-        }
-
-        #wrongECP .content {
-            padding: 10px;
-            text-align: center;
-            font-size: 1.3em
         }
 
         .overlay .title {
@@ -420,18 +399,6 @@
             background: rgba(0, 0, 0, .5)
         }
 
-        .warning {
-            position: fixed;
-            box-sizing: border-box;
-            top: 60px;
-            right: 0;
-            left: 0;
-            padding: 6px 20px;
-            height: 30px;
-            font-family: sans-serif;
-            background: hsl(0, 50%, 50%)
-        }
-
         .centerpanel {
             position: fixed;
             top: 60px;
@@ -452,15 +419,15 @@
 
         .renderpanelcontainer {
             position: absolute;
-            top: 0;
+            top: 40px;
             bottom: 0;
             right: 0;
-            width: 50%
+            width: 100%;
         }
 
         .editor {
             position: absolute;
-            top: 00px;
+            top: 0px;
             bottom: 0;
             left: 0;
             right: 0
@@ -471,10 +438,10 @@
             top: 0;
             bottom: 0;
             left: 0;
-            width: 50%;
+            width: 0%;
             background: hsla(35, 30%, 80%, .1)
         }
-
+        
         .insideeditorpanel {
             position: absolute;
             top: 40px;
@@ -483,30 +450,25 @@
             right: 0;
             background: rgba(0, 0, 0, .5)
         }
-
+        
         .insiderenderpanel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
             position: absolute;
-            top: 40px;
+            top: 0px;
             bottom: 0;
             left: 0;
             right: 0;
-            background: url(https://starblast.io/static/img/bg.webp) #000;
-            text-align: center
+            background: url(https://raw.githubusercontent.com/Modraxis/images/main/stars.jpg) no-repeat #000;
+            background-size: cover;
+            text-align: center;
+            overflow: hidden;
         }
 
         .insiderenderpanel canvas {
             width: 100%
-        }
-
-        #shapecanvas {
-            position: absolute;
-            top: 40px;
-            right: 0;
-            background: var(--Dark-color);
-            text-align: center;
-            border-radius: 0 0 0 30px !important;
-            z-index: 1;
-            opacity: .6
         }
 
         .right-menu {
@@ -529,7 +491,7 @@
 
         .iconsbar {
             font-family: 'Lato', sans-serif;
-            padding: 5px 10px;
+            padding: 5px 65px;
             color: #EEE;
             position: absolute;
             top: 0;
@@ -1078,6 +1040,7 @@
         }
     </style>
     <style>
+        /*
         body,
         html {
             background: var(--Dark-color) !important;
@@ -1086,29 +1049,11 @@
         }
 
         .header {
-            display: flex;
-            text-align: left !important;
             user-select: none !important;
             color: var(--Main-color) !important;
             font-size: 1.3em !important;
             border-bottom: solid 2px var(--Light-color) !important;
             box-shadow: 0 0 30px var(--Main-color) !important;
-        }
-
-        .header div h {
-            font-weight: bold !important;
-        }
-
-        .header a {
-            font-family: 'Lato', sans-serif !important;
-            border-radius: 10px !important;
-            font-size: 0.7em !important;
-            color: var(--Main-color) !important;
-            background: transparent !important;
-        }
-
-        .header a:hover {
-            text-decoration: underline !important;
         }
 
         .iconsbar,
@@ -1206,57 +1151,9 @@
             background: var(--Dark-color) !important;
         }
 
-        #disclaimer {
-            background: var(--Dark-color) !important;
-            border: 1px solid var(--Main-color) !important;
-            border-radius: 12px !important;
-            box-shadow: 0 0 10px var(--Main-color) !important;
-            overflow: hidden !important;
-        }
-
         .title {
             background: var(--Dark-color) !important;
             border-bottom: 3px solid var(--Main-color) !important;
-        }
-
-        #acceptDisclaimer {
-            background: var(--Dark-color) !important;
-            color: var(--Main-color) !important;
-            border-radius: 10px !important;
-            border: 1px solid var(--Main-color) !important;
-            font-weight: 600 !important;
-            transition: 0.5s !important;
-        }
-
-        #acceptDisclaimer:hover {
-            transform: scale(1.1) !important;
-            background: var(--Main-color) !important;
-            color: var(--Dark-color) !important;
-            transition: 0.5s !important;
-        }
-
-        .warning {
-            background: var(--Dark-color) !important;
-        }
-
-        #hide-warning {
-            border-radius: 8px !important;
-            padding: 4px 14px !important;
-            border-color: var(--Main-color) !important;
-            color: var(--Main-color) !important;
-            background: transparent !important;
-            border: 1pt solid !important;
-            font-size: 10pt !important;
-            margin: 0 !important;
-            float: right !important;
-            margin-top: -2pt !important;
-            transition: 0.5s !important;
-        }
-
-        #hide-warning:hover {
-            background: var(--Main-color) !important;
-            color: var(--Dark-color) !important;
-            transform: scale(1.1) !important;
         }
 
         button {
@@ -1321,10 +1218,6 @@
             top: 0px !important;
         }
 
-        #shapecanvas {
-            opacity: 0.75 !important;
-        }
-
         input[type="range"] {
             -webkit-appearance: none !important;
             appearance: none !important;
@@ -1359,7 +1252,6 @@
             float: left !important;
         }
 
-        #wrongECP,
         #shipLoader {
             transition: 0.5s !important;
             transform: translateX(-50%) translateY(-50%) scale(0);
@@ -1376,15 +1268,7 @@
 
         .ace-monokai .ace_marker-layer .ace_selection {
             background: hsla(var(--Hue), 100%, 25%) !important;
-        }
-
-        .insideeditorpanel {
-            display: none !important;
-        }
-        .renderpanel,
-        .editorpanel {
-            background: transparent;
-        }
+        }*/
     </style>
 </head>
 
@@ -1419,7 +1303,7 @@
     <div class="overlay">
         <div id="shipLoader">
             <div class="title">
-                <span id="closeModal" style="float:right">&times;</span> Choose a ship to load
+                <span id="closeModal" style="float:right">&times;</span> Choose a Ship (Default ships)
             </div>
             <div class="content">
                 <table>
@@ -1432,201 +1316,139 @@
                 </table>
             </div>
         </div>
-        <!-- <div id="wrongECP"> -->
-            <!-- <div class="title">Please, insert your ECP</div> -->
-            <!-- <div class="content"> -->
-                <!-- Your Elite Commander Pass is not valid.<br />Please, return to the game to validate your ECP before -->
-                <!-- using our ship editor. -->
-                <!-- <div><a class="btn btn-return" href="/">Return to the game</a></div> -->
-            <!-- </div> -->
-        <!-- </div> -->
-        <div id="disclaimer">
-            <!-- <div class="title">Terms of use</div> -->
-            <div class="content">
-                <!-- This tool is provided as is, without any warranty of any kind. All the models created or exported using -->
-                <!-- this tool are the sole property of Neuronality SARL.<br /> You cannot claim any right of ownership or -->
-                <!-- royalty fees on such models.<br /> -->
-                <!-- <br /> Neuronality grants you the right to use these models: -->
-                <!-- <ul> -->
-                    <!-- <li>for personal, non-commercial uses</li> -->
-                    <!-- <li>in Youtube videos (even monetized with ads)</li> -->
-                    <!-- <li>for personal, non-commercial 3D printing.</li> -->
-                <!-- </ul> -->
-                <!-- <div><a class="btn btn-return" href="#" id="acceptDisclaimer">I agree to these terms</a></div> -->
-            </div>
-        </div>
     </div>
     <div class="wrapper">
         <div class="header">
             <img src="https://raw.githubusercontent.com/Modraxis/Starblast-Thems-Skin/main/Cool%20Starblast%20Modding/Logo.png"
-                class="logo">&nbsp;&nbsp;&nbsp;&nbsp;Ship Showcase
-
-            <a href="https://starblast.io/modding.html" target="sb_modeditor">
-                <i class="sbg sbg-modding"></i> Mod Editor
-            </a>
+                class="logo">
+            <h2>Ship Showcase</h2>
+            <div class="links">
+                <a href="https://starblast.io/modding.html" target="_blank">
+                    <i class="sbg sbg-modding"></i> Mod Editor
+                </a>
+                <a href="https://starblast.io/shipeditor/" target="_blank">
+                    <i class="sbg sbg-fly-mid"></i> Ship Editor
+                </a>
+            </div>
         </div>
         <div class="footer"></div>
-        <!-- <div class="warning">
-            <i class="fa fa-warning"></i>
-            <span>Copying / pasting code from untrusted sources is dangerous.</span>
-        </div> -->
         <div class="centerpanel">
             <div class="editorpanel">
                 <div class="iconsbar editoriconsbar">
-                    <!-- <a href="#" data-tooltip="Save Ship" id="saveShip"><i class="fa fa-fw fa-save"></i></a> -->
-                    <span class="separator"></span>
                     <label href="#" data-tooltip="Load Ship From File" class="loadship">
                         <input type="file" id="loadShip" name="loadShip" accept=".txt, text/plain" />
                         <i class="fa fa-fw fa-folder-open"></i>
                     </label>
                     <span class="separator"></span>
                     <a href="#" data-tooltip="Export PNG" id="exportPNG"><i class="fa fa-fw fa-picture-o"></i></a>
-                    <!-- <a href="#" data-tooltip="Export OBJ" id="toobj"><i class="fa fa-fw fa-object-ungroup"></i></a> -->
                     <span class="separator"></span>
                     <a href="#" data-tooltip="Change Material" id="changeMaterial"><i class="fa fa-fw fa-cubes"></i></a>
                     <a href="#" data-tooltip="Change Color" id="changeHue"><i class="fa fa-fw fa-paint-brush"></i></a>
-                    <a href="#" data-tooltip="Load ship" id="loadModel"><i class="sbg sbg-fly-mid"></i></a>
-                    <!-- <a href="#" id="modExport">Mod Export</a> -->
+                    <span class="separator"></span>
+                    <a href="#" data-tooltip="Load Ship" id="loadModel"><i class="sbg sbg-fly-full"
+                            style="font-size:17pt;margin-left:3px;margin-right:3px"></i></a>
                     <span class="separator"></span>
                     <a href="#" id="colorButton">Set Color</a>
                 </div>
                 <div class="insideeditorpanel">
-                    <div id="editor" class="editor"></div>
+                    <div id="editor" class="editor" style="display: none;"></div>
                 </div>
             </div>
             <div class="renderpanelcontainer">
                 <div class="renderpanel">
-                    </div>
                     <div class="insiderenderpanel" id="insiderenderpanel"></div>
-                    <!-- <div><canvas id="shapecanvas" width="150" height="150"></canvas></div> -->
-                    <!-- <div id="compiled" class="compiled"></div> -->
                 </div>
-                <div id="export"></div>
             </div>
         </div>
     </div>
     <script>
 
-        var overlay = document.querySelector('.overlay');
-        var shipLoader = document.getElementById('shipLoader');
-        var wrongECP = document.getElementById('wrongECP');
-        var disclaimer = document.getElementById('disclaimer');
+        // var overlay = document.querySelector('.overlay');
+        // var shipLoader = document.getElementById('shipLoader');
 
-        if (overlay && shipLoader && disclaimer) {
-            var observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    if (mutation.target.style.display === 'block') {
-                        shipLoader.style.transform = 'translateX(-50%) translateY(-50%) scale(1)';
-                        wrongECP.style.transform = 'translateX(-50%) translateY(-50%) scale(1)';
-                        disclaimer.style.transform = 'translateX(-50%) translateY(-50%) scale(1)';
-                    } else {
-                        shipLoader.style.transform = '';
-                        wrongECP.style.transform = '';
-                        disclaimer.style.transform = '';
-                    }
-                });
-            });
-            observer.observe(overlay, { attributes: true, attributeFilter: ['style'] });
-        }
+        // if (overlay && shipLoader) {
+        //     var observer = new MutationObserver(function (mutations) {
+        //         mutations.forEach(function (mutation) {
+        //             if (mutation.target.style.display === 'block') {
+        //                 shipLoader.style.transform = 'translateX(-50%) translateY(-50%) scale(1)';
+        //             } else {
+        //                 shipLoader.style.transform = '';
+        //             }
+        //         });
+        //     });
+        //     observer.observe(overlay, { attributes: true, attributeFilter: ['style'] });
+        // }
 
-        function removeWarning() {
-            let warn = document.querySelector("div.warning");
-            if (warn != null) {
-                warn.remove();
-                let centerpanel = document.querySelector(".centerpanel");
-                if (centerpanel != null) centerpanel.style.top = "60px";
-            }
-        }
+        // var isGrabbing = false;
+        // function toggleCursor() {
+        //     var insiderenderpanel = document.getElementById("insiderenderpanel");
+        //     if (insiderenderpanel) {
+        //         insiderenderpanel.style.cursor = isGrabbing ? "grabbing" : "grab";
+        //     }
+        // }
+        // var insiderenderpanel = document.getElementById("insiderenderpanel");
+        // if (insiderenderpanel) {
+        //     insiderenderpanel.addEventListener("mousedown", function () {
+        //         isGrabbing = true;
+        //         toggleCursor();
+        //     });
 
-        if (localStorage.getItem("remove-warning") !== "true") {
-            let hideWarning = document.createElement("button");
-            hideWarning.setAttribute("id", "hide-warning");
-            hideWarning.innerHTML = "I understand. Don't show this again";
-            hideWarning.addEventListener("click", function () {
-                localStorage.setItem("remove-warning", true);
-                removeWarning();
-            });
+        //     window.addEventListener("mouseup", function () {
+        //         isGrabbing = false;
+        //         toggleCursor();
+        //     });
+        // }
 
-            let warn = document.querySelector("div.warning");
-            if (warn != null) {
-                warn.appendChild(hideWarning);
-            }
-        }
+        // function updateColors(selectedHue) {
+        //     document.documentElement.style.setProperty('--Hue', selectedHue);
+        //     document.documentElement.style.setProperty('--Main-color', `hsl(${selectedHue}, 100%, 50%)`);
+        //     document.documentElement.style.setProperty('--Light-color', `hsl(${selectedHue}, 100%, 80%)`);
+        //     document.documentElement.style.setProperty('--Dark-color', `hsl(${selectedHue}, 100%, 4%)`);
+        //     document.documentElement.style.setProperty('--sec-Main-color', `hsla(${selectedHue}, 100%, 50%, 0.5)`);
+        //     document.documentElement.style.setProperty('--sec-Dark-color', `hsla(${selectedHue}, 100%, 12%, 0.5)`);
+        // }
 
-        if (localStorage.getItem("remove-warning") === "true") {
-            removeWarning();
-        }
+        // var hueAdjuster = document.createElement('input');
+        // hueAdjuster.type = 'range';
+        // hueAdjuster.min = '0';
+        // hueAdjuster.max = '360';
 
-        var isGrabbing = false;
-        function toggleCursor() {
-            var insiderenderpanel = document.getElementById("insiderenderpanel");
-            if (insiderenderpanel) {
-                insiderenderpanel.style.cursor = isGrabbing ? "grabbing" : "grab";
-            }
-        }
-        var insiderenderpanel = document.getElementById("insiderenderpanel");
-        if (insiderenderpanel) {
-            insiderenderpanel.addEventListener("mousedown", function () {
-                isGrabbing = true;
-                toggleCursor();
-            });
+        // var storedHue = localStorage.getItem('selectedHue');
+        // if (storedHue) {
+        //     hueAdjuster.value = storedHue;
+        //     updateColors(storedHue);
+        // } else {
+        //     hueAdjuster.value = '0';
+        //     updateColors('0');
+        // }
 
-            window.addEventListener("mouseup", function () {
-                isGrabbing = false;
-                toggleCursor();
-            });
-        }
+        // hueAdjuster.style.display = 'none';
+        // hueAdjuster.style.position = 'absolute';
+        // hueAdjuster.style.top = '10px';
+        // hueAdjuster.style.left = '50%';
+        // hueAdjuster.style.transform = 'translateX(-50%)';
+        // hueAdjuster.addEventListener('input', function (event) {
+        //     var selectedHue = event.target.value;
+        //     localStorage.setItem('selectedHue', selectedHue);
+        //     updateColors(selectedHue);
+        // });
+        // document.body.appendChild(hueAdjuster);
 
-        function updateColors(selectedHue) {
-            document.documentElement.style.setProperty('--Hue', selectedHue);
-            document.documentElement.style.setProperty('--Main-color', `hsl(${selectedHue}, 100%, 50%)`);
-            document.documentElement.style.setProperty('--Light-color', `hsl(${selectedHue}, 100%, 80%)`);
-            document.documentElement.style.setProperty('--Dark-color', `hsl(${selectedHue}, 100%, 4%)`);
-            document.documentElement.style.setProperty('--sec-Main-color', `hsla(${selectedHue}, 100%, 50%, 0.5)`);
-            document.documentElement.style.setProperty('--sec-Dark-color', `hsla(${selectedHue}, 100%, 12%, 0.5)`);
-        }
+        // var hueIndicator = document.createElement('span');
+        // hueIndicator.style.position = 'absolute';
+        // hueIndicator.style.top = '30px';
+        // hueIndicator.style.left = '50%';
+        // hueIndicator.style.fontFamily = 'Lato, sans-serif';
+        // hueIndicator.style.transform = 'translateX(-50%)';
+        // document.body.appendChild(hueIndicator);
 
-        var hueAdjuster = document.createElement('input');
-        hueAdjuster.type = 'range';
-        hueAdjuster.min = '0';
-        hueAdjuster.max = '360';
-
-        var storedHue = localStorage.getItem('selectedHue');
-        if (storedHue) {
-            hueAdjuster.value = storedHue;
-            updateColors(storedHue);
-        } else {
-            hueAdjuster.value = '0';
-            updateColors('0');
-        }
-
-        hueAdjuster.style.display = 'none';
-        hueAdjuster.style.position = 'absolute';
-        hueAdjuster.style.top = '10px';
-        hueAdjuster.style.left = '50%';
-        hueAdjuster.style.transform = 'translateX(-50%)';
-        hueAdjuster.addEventListener('input', function (event) {
-            var selectedHue = event.target.value;
-            localStorage.setItem('selectedHue', selectedHue);
-            updateColors(selectedHue);
-        });
-        document.body.appendChild(hueAdjuster);
-
-        var hueIndicator = document.createElement('span');
-        hueIndicator.style.position = 'absolute';
-        hueIndicator.style.top = '30px';
-        hueIndicator.style.left = '50%';
-        hueIndicator.style.fontFamily = 'Lato, sans-serif';
-        hueIndicator.style.transform = 'translateX(-50%)';
-        document.body.appendChild(hueIndicator);
-
-        updateColors(hueAdjuster.value);
+        // updateColors(hueAdjuster.value);
 
 
-        var colorButton = document.getElementById('colorButton');
-        colorButton.addEventListener('click', function () {
-            hueAdjuster.style.display = hueAdjuster.style.display === 'none' ? 'block' : 'none';
-        });
+        // var colorButton = document.getElementById('colorButton');
+        // colorButton.addEventListener('click', function () {
+        //     hueAdjuster.style.display = hueAdjuster.style.display === 'none' ? 'block' : 'none';
+        // });
     </script>
     <script>
         (function (s, t, a, r, b, l, i, o) {
@@ -6651,6 +6473,9 @@
                             case "alloy":
                                 this.buildAlloyMaterial();
                                 break;
+                            case "zinc":
+                                this.buildZincMaterial();
+                                break;
                             case "gold":
                                 this.buildGoldMaterial();
                                 break;
@@ -6676,7 +6501,20 @@
                                 this.buildDefaultMaterial()
                         }
                         return this.base_color = this.material.color.getHex(), s = this.base_color >> 16 & 255, i = this.base_color >> 8 & 255, t = 255 & this.base_color, this.dark_color = Math.floor(s / 2) << 16 | Math.floor(i / 2) << 8 | Math.floor(t / 2), this.material
-                    }, e.prototype.buildDefaultMaterial = function (e) {
+                    },
+                     e.prototype.buildDefaultMaterial = function (e) {
+                        return this.material = new THREE.MeshPhongMaterial({
+                            map: IOI10,
+                            bumpMap: IOI10,
+                            specularMap: IOI10,
+                            specular: "hsl(200, 100%, 12%)",
+                            shininess: 40,
+                            bumpScale: .1,
+                            color: "hsl(200, 100%, 12%)",
+                            emissive: IOl01.hsvToRgbHex(this.hue, .5, 1),
+                            emissiveMap: O00IO
+                        })
+                    }, e.prototype.buildZincMaterial = function (e) {
                         return null == e && (e = 10), this.material = new THREE.MeshLambertMaterial({
                             map: IOI10,
                             color: 16777215,
@@ -7154,7 +6992,7 @@
                             return function (t) {
                                 return e.mouseUp(t)
                             }
-                        }(this)), this.dragging = !1, this.O0111(), this.material_index = 0, this.materials = ["zinc", "alloy", "Electric-Blue", "carbon", "titanium", "gold", "Copper", "Diamond", "FullColor"], this.model_index = 0, this.hue = 0, i = llll1.O0lII, e = 0, t = i.length; e < t; e++) s = i[e], null == this.levels[s.level] && (this.levels[s.level] = []), this.levels[s.level].push(100 * s.level + s.model);
+                        }(this)), this.dragging = !1, this.O0111(), this.material_index = 0, this.materials = ["default" ,"zinc", "alloy", "carbon", "titanium", "gold", "Electric-Blue", "Copper", "Diamond", "FullColor"], this.model_index = 0, this.hue = 0, i = llll1.O0lII, e = 0, t = i.length; e < t; e++) s = i[e], null == this.levels[s.level] && (this.levels[s.level] = []), this.levels[s.level].push(100 * s.level + s.model);
                         if (localStorage.getItem("code") && this.editor.setValue(localStorage.getItem("code"), -1), document.getElementById("exportPNG").addEventListener("click", function (e) {
                             return function (t) {
                                 return t.preventDefault(), e.export()
@@ -7171,56 +7009,14 @@
                             return function (t) {
                                 return t.preventDefault(), e.loadModel()
                             }
-                        }(this)), document.getElementById("modExport").addEventListener("click", function (e) {
-                            return function (t) {
-                                var i;
-                                return t.preventDefault(), i = new Blob([e.modExport()], {
-                                    type: "text/plain"
-                                }), saveAs(i, "starblast-modexport_" + Date.now() + ".txt")
-                            }
                         }(this)), document.getElementById("closeModal").addEventListener("click", function (e) {
                             return function (t) {
                                 return e.closeModal(t)
                             }
-                        }(this)), document.getElementById("acceptDisclaimer").addEventListener("click", function (e) {
-                            return function (t) {
-                                return e.acceptedDisclaimer(t)
-                            }
-                        }(this)), document.getElementById("showDisclaimer").addEventListener("click", function (e) {
-                            return function (t) {
-                                return e.showDisclaimer(t)
-                            }
-                        }(this)), document.getElementById("toobj").addEventListener("click", function (e) {
-                            return function (t) {
-                                var i;
-                                return t.preventDefault(), i = new Blob([e.toObj()], {
-                                    type: "text/plain"
-                                }), saveAs(i, "starblast-" + Date.now() + ".obj")
-                            }
-                        }(this)), document.getElementById("saveShip").addEventListener("click", function (e) {
-                            return function (t) {
-                                var i;
-                                return t.preventDefault(), i = new Blob([e.editor.getValue()], {
-                                    type: "text/plain"
-                                }), saveAs(i, "starblast-editor_" + Date.now() + ".txt")
-                            }
-                        }(this)), document.getElementById("loadShip").addEventListener("change", this.loadShip, !1), null === localStorage.getItem("acceptedDisclaimer")) return this.showDisclaimer()
+                        }(this)), document.getElementById("loadShip").addEventListener("change", this.loadShip, !1), null === localStorage.getItem("acceptedDisclaimer")) return;
                     }
                     return ShipEditor.prototype.closeModal = function (e) {
                         return e && e.preventDefault(), document.querySelector(".overlay").style.display = "none", document.querySelector(".overlay>div").style.display = "none"
-                    }, ShipEditor.prototype.showDisclaimer = function (e) {
-                        var t, i, s, o;
-                        return e && e.preventDefault(), s = document.querySelector(".overlay"), i = document.querySelector("#disclaimer"), o = s.querySelector(".title"), t = s.querySelector(".content"), s.style.display = "block", i.style.display = "block", t.style.height = i.offsetHeight - o.offsetHeight + "px", window.addEventListener("resize", function () {
-                            return t.style.height = i.offsetHeight - o.offsetHeight + "px"
-                        })
-                    }, ShipEditor.prototype.acceptedDisclaimer = function (e) {
-                        var t, i;
-                        return e.preventDefault(), localStorage.setItem("acceptedDisclaimer", "yes"), i = document.querySelector(".overlay"), t = document.querySelector("#disclaimer"), i.style.display = "none", t.style.display = "none"
-                    }, ShipEditor.prototype.I0010 = function () {
-                        var e, t, i, s;
-                        return i = document.querySelector(".overlay"), t = document.querySelector("#wrongECP"), s = i.querySelector(".title"), e = i.querySelector(".content"), i.style.display = "block", t.style.display = "block", e.style.height = t.offsetHeight - s.offsetHeight + "px", window.addEventListener("resize", function () {
-                            return e.style.height = t.offsetHeight - s.offsetHeight + "px"
-                        })
                     }, ShipEditor.prototype.loadShip = function (e) {
                         var t, i;
                         return i = e.target.files[0], i.type.match("plain") ? (t = new FileReader, t.addEventListener("load", function (e) {
@@ -7288,18 +7084,8 @@
                         return this.must_export = !0
                     }, ShipEditor.prototype.exportImpl = function () {
                         return makeScreenshot()
-                    }, ShipEditor.prototype.toObj = function () {
-                        var e, t, i, s, o, l, n, r, a, h, p, c, d, u;
-                        for (p = "", e = function (e) {
-                            return Math.round(1e5 * e) / 1e5
-                        }, r = this.ship.mesh.geometry.vertices, t = 0, s = r.length; t < s; t++) u = r[t], p += "v " + e(u.x) + " " + e(u.y) + " " + e(u.z) + "\n";
-                        for (p += "\n", a = this.ship.mesh.geometry.faceVertexUvs[0], i = 0, o = a.length; i < o; i++) c = a[i], p += "vt " + e(c[0].x) + " " + e(c[0].y) + "\n", p += "vt " + e(c[1].x) + " " + e(c[1].y) + "\n", p += "vt " + e(c[2].x) + " " + e(c[2].y) + "\n";
-                        for (p += "\n", d = 1, h = this.ship.mesh.geometry.faces, n = 0, l = h.length; n < l; n++) e = h[n], p += "f " + (e.a + 1) + "/" + d + " " + (e.b + 1) + "/" + (d + 1) + " " + (e.c + 1) + "/" + (d + 2) + "\n", d += 3;
-                        return p
-                    }, ShipEditor.prototype.modExport = function () {
-                        var code, name, shipdata, src;
-                        return src = this.editor.getValue(), code = CoffeeScript.compile(src), shipdata = eval(code), null != shipdata && (shipdata.typespec = Compiler.compileShip(shipdata)), name = shipdata.name + "_" + shipdata.typespec.code, "var " + (name = name.replace(/(\s|-)/g, "_")) + " = '" + JSON.stringify(shipdata) + "';"
-                    }, ShipEditor
+                    },
+                        ShipEditor
                 }(), window.makeScreenshot = function () {
                     var e, t, i;
                     return e = editor.OlOlI.domElement, i = document.createElement("canvas"), i.width = e.width, i.height = e.height, t = i.getContext("2d"), t.drawImage(e, 0, 0), i.toBlob(function (e) {
