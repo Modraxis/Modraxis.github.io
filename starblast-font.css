@@ -1,0 +1,416 @@
+@font-face {
+    font-family: 'SBGlyphs';
+    src: url('https://starblast.data.neuronality.com/fonts/starblast-glyphs.ttf?v=1');
+    font-weight: normal;
+    font-style: normal
+}
+
+.sbg {
+    display: inline-block;
+    font: normal normal normal 14px/1 SBGlyphs;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.sbg-fw {
+    width: 1.28571429em;
+    text-align: center
+}
+
+.sbg-wiki:before {
+    content: "\0021"
+}
+
+.sbg-lock:before {
+    content: "\0022"
+}
+
+.sbg-tick:before {
+    content: "\0023"
+}
+
+.sbg-heart:before {
+    content: "\0024"
+}
+
+.sbg-shield-mid:before {
+    content: "\0025"
+}
+
+.sbg-lightning:before {
+    content: "\0026"
+}
+
+.sbg-lightning-mid:before {
+    content: "\0027"
+}
+
+.sbg-lightning-full:before {
+    content: "\0028"
+}
+
+.sbg-diamond:before {
+    content: "\0029"
+}
+
+.sbg-times:before {
+    content: "\002a"
+}
+
+.sbg-crosshair:before {
+    content: "\002b"
+}
+
+.sbg-fullscreen:before {
+    content: "\002c"
+}
+
+.sbg-trophy:before {
+    content: "\002d"
+}
+
+.sbg-trophy-full:before {
+    content: "\002e"
+}
+
+.sbg-asteroid:before {
+    content: "\002f"
+}
+
+.sbg-alien:before {
+    content: "\0030"
+}
+
+.sbg-team:before {
+    content: "\0031"
+}
+
+.sbg-world:before {
+    content: "\0032"
+}
+
+.sbg-station:before {
+    content: "\0033"
+}
+
+.sbg-station-full:before {
+    content: "\0034"
+}
+
+.sbg-station-inverted:before {
+    content: "\0035"
+}
+
+.sbg-plus:before {
+    content: "\0036"
+}
+
+.sbg-plus-full:before {
+    content: "\0037"
+}
+
+.sbg-plus-inverted:before {
+    content: "\0038"
+}
+
+.sbg-coins:before {
+    content: "\0039"
+}
+
+.sbg-vulcan:before {
+    content: "\003a"
+}
+
+.sbg-wait:before {
+    content: "\003b"
+}
+
+.sbg-yes:before {
+    content: "\003c"
+}
+
+.sbg-no:before {
+    content: "\003d"
+}
+
+.sbg-you:before {
+    content: "\003e"
+}
+
+.sbg-me:before {
+    content: "\003f"
+}
+
+.sbg-follow:before {
+    content: "\0040"
+}
+
+.sbg-happy:before {
+    content: "\0041"
+}
+
+.sbg-menu:before {
+    content: "\0042"
+}
+
+.sbg-infinity:before {
+    content: "\0043"
+}
+
+.sbg-diamond-full:before {
+    content: "\0044"
+}
+
+.sbg-vulkan-full:before {
+    content: "\0045"
+}
+
+.sbg-bye-full:before {
+    content: "\0046"
+}
+
+.sbg-np-full:before {
+    content: "\0047"
+}
+
+.sbg-wait-full:before {
+    content: "\0048"
+}
+
+.sbg-attack-full:before {
+    content: "\0049"
+}
+
+.sbg-help-full:before {
+    content: "\004a"
+}
+
+.sbg-question-full:before {
+    content: "\004b"
+}
+
+.sbg-yes-full:before {
+    content: "\004c"
+}
+
+.sbg-no-full:before {
+    content: "\004d"
+}
+
+.sbg-you-full:before {
+    content: "\004e"
+}
+
+.sbg-me-full:before {
+    content: "\004f"
+}
+
+.sbg-follow-full:before {
+    content: "\0050"
+}
+
+.sbg-fire-full:before {
+    content: "\0060"
+}
+
+.sbg-fly-mid:before {
+    content: "\0061"
+}
+
+.sbg-shield-capacity:before {
+    content: "\0062"
+}
+
+.sbg-shield-regen:before {
+    content: "\0063"
+}
+
+.sbg-generator-capacity:before {
+    content: "\0064"
+}
+
+.sbg-generator-regen:before {
+    content: "\0065"
+}
+
+.sbg-fire-damage:before {
+    content: "\0066"
+}
+
+.sbg-fire-speed:before {
+    content: "\0067"
+}
+
+.sbg-ship-speed:before {
+    content: "\0068"
+}
+
+.sbg-ship-agility:before {
+    content: "\0069"
+}
+
+.sbg-torpedo:before {
+    content: "\006a"
+}
+
+.sbg-missile:before {
+    content: "\006b"
+}
+
+.sbg-rocket:before {
+    content: "\006c"
+}
+
+.sbg-mine:before {
+    content: "\006d"
+}
+
+.sbg-heavy-mine:before {
+    content: "\006e"
+}
+
+.sbg-mining-pod:before {
+    content: "\006f"
+}
+
+.sbg-attack-pod:before {
+    content: "\0070"
+}
+
+.sbg-defense-pod:before {
+    content: "\0071"
+}
+
+.sbg-thrust:before {
+    content: "\0072"
+}
+
+.sbg-fly:before {
+    content: "\0073"
+}
+
+.sbg-fire:before {
+    content: "\0074"
+}
+
+.sbg-shop:before {
+    content: "\0075"
+}
+
+.sbg-rcs-on:before {
+    content: "\0076"
+}
+
+.sbg-rcs-off:before {
+    content: "\0077"
+}
+
+.sbg-gears:before {
+    content: "\0078"
+}
+
+.sbg-user:before {
+    content: "\0079"
+}
+
+.sbg-info:before {
+    content: "\007a"
+}
+
+.sbg-discord:before {
+    content: "\007b"
+}
+
+.sbg-facebook:before {
+    content: "\007c"
+}
+
+.sbg-twitter:before {
+    content: "\007d"
+}
+
+.sbg-reddit:before {
+    content: "\007e"
+}
+
+.sbg-skull-full:before {
+    content: "\007f"
+}
+
+.sbg-sorry:before {
+    content: "\00a1"
+}
+
+.sbg-np:before {
+    content: "\00a2"
+}
+
+.sbg-gg:before {
+    content: "\00a3"
+}
+
+.sbg-bye:before {
+    content: "\00a4"
+}
+
+.sbg-help:before {
+    content: "\00a5"
+}
+
+.sbg-skull:before {
+    content: "\00a6"
+}
+
+.sbg-question:before {
+    content: "\00a7"
+}
+
+.sbg-attack:before {
+    content: "\00a8"
+}
+
+.sbg-caret-up:before {
+    content: "\00a9"
+}
+
+.sbg-caret-down:before {
+    content: "\00aa"
+}
+
+.sbg-sb-caret-up:before {
+    content: "\00ab"
+}
+
+.sbg-sb-caret-down:before {
+    content: "\00ac"
+}
+
+.sbg-fly-full:before {
+    content: "\00ae"
+}
+
+.sbg-thrust-full:before {
+    content: "\00af"
+}
+
+.sbg-money-change:before {
+    content: "\00b0"
+}
+
+.sbg-rounds:before {
+    content: "\00b1"
+}
+
+.sbg-customgame:before {
+    content: "\00c0"
+}
+
+.sbg-modding:before {
+    content: "\00c1"
+}
+
+.sbg-gift:before {
+    content: "\00b7"
+}
