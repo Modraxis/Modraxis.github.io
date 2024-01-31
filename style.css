@@ -9,7 +9,7 @@
 :root {
     --light-color: #6dcdfd;
     --dark-color: #030822;
-    --background-image: url(https://raw.githubusercontent.com/Modraxis/images/main/stars.jpg);
+    --background-image: url(Images/Background.jpg);
     --Font-Ethnocentric: 'Ethnocentric', sans-serif;
     --Font-Exo: 'Exo 2', sans-serif;
 }
